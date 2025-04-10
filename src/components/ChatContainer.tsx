@@ -1,8 +1,10 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import ChatHeader from './ChatHeader';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from '@/hooks/use-toast';
 
 interface Message {
   id: string;
@@ -14,7 +16,7 @@ const ChatContainer: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm your AI assistant. How can I help you today?",
+      content: "Hello! I'm your AI assistant powered by Hugging Face. How can I help you today?",
       role: 'assistant',
     },
   ]);
@@ -29,7 +31,7 @@ const ChatContainer: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = (content: string) => {
+  const handleSendMessage = async (content: string) => {
     const userMessage: Message = {
       id: uuidv4(),
       content,
@@ -39,33 +41,56 @@ const ChatContainer: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
     
-    setTimeout(() => {
-      const botResponses = [
-        "I understand your question. Let me think about that...",
-        "That's an interesting point! Here's what I think...",
-        "I'd be happy to help with that. Here's what you need to know...",
-        "Great question! The answer is actually quite fascinating...",
-        "I've processed your request and here's what I found...",
-      ];
+    try {
+      // In a production environment, this would be an API call to your backend
+      // which would then call Hugging Face API with proper authentication
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: content }),
+      });
       
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+      if (!response.ok) {
+        throw new Error('Failed to get response from the chatbot');
+      }
+      
+      const data = await response.json();
       
       const botMessage: Message = {
         id: uuidv4(),
-        content: randomResponse,
+        content: data.message || "I'm having trouble processing that right now. Please try again later.",
         role: 'assistant',
       };
       
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error communicating with the API:', error);
+      toast({
+        title: "Communication Error",
+        description: "Failed to connect to the chatbot service. Please try again.",
+        variant: "destructive"
+      });
+      
+      // Fallback response in case of errors
+      const errorMessage: Message = {
+        id: uuidv4(),
+        content: "I'm sorry, I couldn't process your request due to a connection error. Please try again later.",
+        role: 'assistant',
+      };
+      
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleReset = () => {
     setMessages([
       {
         id: '1',
-        content: "Hello! I'm your AI assistant. How can I help you today?",
+        content: "Hello! I'm your AI assistant powered by Hugging Face. How can I help you today?",
         role: 'assistant',
       },
     ]);

@@ -12,11 +12,12 @@ const Hero: React.FC<HeroProps> = ({ onStartChat }) => {
     <div className="flex flex-col items-center text-center space-y-8 py-12 px-4 md:py-20">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-chatbot-dark to-chatbot-primary">
-          Chat with our AI Assistant
+          Your Friendly Chatbot Awaits!
         </span>
       </h1>
       
       <p className="text-xl text-muted-foreground max-w-3xl">
+        Experience natural conversations with our AI assistant powered by Hugging Face technology.
         Get instant answers, creative ideas, and helpful guidance through our intelligent chatbot interface.
       </p>
       
@@ -33,12 +34,12 @@ const Hero: React.FC<HeroProps> = ({ onStartChat }) => {
         <FeatureCard 
           icon={<MessageSquare className="h-10 w-10 text-chatbot-primary" />}
           title="Instant Responses"
-          description="Get immediate answers to your questions without waiting."
+          description="Get immediate answers to your questions from our AI-powered assistant."
         />
         <FeatureCard 
           icon={<Lightbulb className="h-10 w-10 text-chatbot-primary" />}
           title="Smart Assistance"
-          description="Powered by advanced AI to provide helpful, accurate information."
+          description="Powered by Hugging Face AI to provide helpful, accurate information."
         />
         <FeatureCard 
           icon={<Zap className="h-10 w-10 text-chatbot-primary" />}

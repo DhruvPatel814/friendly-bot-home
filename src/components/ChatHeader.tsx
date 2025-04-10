@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Bot } from 'lucide-react';
 
 interface ChatHeaderProps {
   onReset: () => void;
@@ -11,8 +11,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ onReset }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b bg-background">
       <div className="flex items-center space-x-2">
-        <div className="h-2 w-2 rounded-full bg-green-500"></div>
-        <h2 className="text-lg font-semibold">AI Assistant</h2>
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-chatbot-primary text-white">
+          <Bot className="h-5 w-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold">Friendly Bot</h2>
+          <p className="text-xs text-muted-foreground">Powered by Hugging Face</p>
+        </div>
       </div>
       <Button 
         variant="ghost" 
