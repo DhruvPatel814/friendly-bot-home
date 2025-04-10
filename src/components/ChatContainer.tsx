@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import ChatHeader from './ChatHeader';
 import ChatMessage from './ChatMessage';
@@ -31,7 +30,6 @@ const ChatContainer: React.FC = () => {
   }, [messages]);
 
   const handleSendMessage = (content: string) => {
-    // Add user message
     const userMessage: Message = {
       id: uuidv4(),
       content,
@@ -41,7 +39,6 @@ const ChatContainer: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
     
-    // Simulate AI response after a delay
     setTimeout(() => {
       const botResponses = [
         "I understand your question. Let me think about that...",
