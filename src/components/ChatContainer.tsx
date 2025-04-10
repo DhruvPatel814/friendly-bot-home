@@ -5,6 +5,7 @@ import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from '@/hooks/use-toast';
+import { handleChatRequest } from '@/api/chat';
 
 interface Message {
   id: string;
@@ -42,15 +43,17 @@ const ChatContainer: React.FC = () => {
     setIsLoading(true);
     
     try {
-      // In a production environment, this would be an API call to your backend
-      // which would then call Hugging Face API with proper authentication
-      const response = await fetch('/api/chat', {
+      // Create a request object mimicking a fetch request
+      const request = new Request('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ message: content }),
       });
+      
+      // Call our local API handler directly
+      const response = await handleChatRequest(request);
       
       if (!response.ok) {
         throw new Error('Failed to get response from the chatbot');
